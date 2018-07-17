@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.teachingschedule.dao.UserDAO">
+
+    <!--List<Teachers> getTeachersByRole();-->
+    <select id="getTeachersByRole" resultType="com.web.teachingschedule.vo.Teachers">
+        SELECT
+        user_id teacherId,
+        user_name teacherName
+        FROM
+        UserInfo
+        WHERE
+        user_role LIKE '%T%'
+        ORDER BY
+        user_id ASC
+    </select>
+
+    <!--User getUserById(String userId);-->
+    <select id="getUserById" resultType="com.web.teachingschedule.vo.entity.UserInfo">
+        SELECT
+        user_id userId,
+        user_name userName,
+        password,
+        user_role userRole
+        FROM
+        UserInfo
+        WHERE user_id=#{userId}
+    </select>
+    <!--int addUser(UserInfo user);-->
+    <insert id="addUser" parameterType="com.web.teachingschedule.vo.entity.UserInfo" keyProperty="userId">
+        INSERT INTO
+        UserInfo
+        (user_id,user_name,password,user_role)
+        VALUE
+        (#{userId},#{userName},#{password},#{userRole})
+    </insert>
+    <!--int deleteUser(String userId);-->
+    <delete id="deleteUser" parameterType="java.lang.String">
+        DELETE FROM UserInfo
+        WHERE user_id=#{userId}
+    </delete>
+
+    <!--int deleteLotUser(List<String> userIds);-->
+    <delete id="deleteLotUser" parameterType="java.util.List">
+        DELETE FROM
+        UserInfo
+        WHERE
+        user_id IN
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <!--int resetPw(@Param("userId") String userId);-->
+    <update id="resetPw" parameterType="java.lang.String">
+        UPDATE
+        UserInfo
+        SET
+        password='123456'
+        WHERE
+        user_id=#{userId}
+    </update>
+
+    <!--int resetLotPw(@Param("userIds") List<String> userIds);-->
+    <update id="resetLotPw" parameterType="java.util.List">
+        UPDATE
+        UserInfo
+        SET
+        password='123456'
+        WHERE
+        user_id IN
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+              #{userId}
+        </foreach>
+
+    </update>
+
+    <!--int modifyPw(String userId,String newPassword);-->
+    <update id="modifyPw" parameterType="java.lang.String">
+        UPDATE
+        UserInfo
+        SET
+        password=#{newPassword}
+        WHERE
+        user_id=#{userId}
+    </update>
+
+    <!--UserInfo getUserByName(@Param("userName") String userName);-->
+    <select id="getUserByName" resultType="com.web.teachingschedule.vo.entity.UserInfo">
+        SELECT
+        user_id userId,
+        user_name userName,
+        password,
+        user_role userRole
+        FROM
+        UserInfo
+        WHERE user_name=#{userName}
+    </select>
+</mapper>

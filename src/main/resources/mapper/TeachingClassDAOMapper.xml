@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.teachingschedule.dao.TeachingClassDAO">
+    <!--TeachingClass getClassByCourseAndClass(@Param("courseId") String courseId,@Param("classId") String classId);-->
+    <select id="getClassByCourseAndClass" resultType="com.web.teachingschedule.vo.entity.TeachingClass">
+        SELECT
+        class_id classId,
+        class_people classPeople,
+        class_major classMajor,
+        grade grade,
+        course_id courseId,
+        user_id userId
+        FROM
+        teachingClass
+        WHERE
+        course_id=#{courseId} AND class_id=#{classId}
+    </select>
+    <!--List<TeachingClass> getClasses();-->
+    <select id="getClasses" resultType="com.web.teachingschedule.vo.entity.TeachingClass">
+        SELECT
+        class_id classId,
+        class_people classPeople,
+        class_major classMajor,
+        grade grade,
+        course_id courseId,
+        user_id userId
+        FROM
+        teachingClass
+        ORDER BY
+        course_id ASC,
+        class_id ASC
+    </select>
+
+    <!--List<TeachingClass> getClassesByCourseId(@Param("courseId") String courseId);-->
+    <select id="getClassesByCourseId" resultType="com.web.teachingschedule.vo.entity.TeachingClass">
+        SELECT
+        class_id classId,
+        class_people classPeople,
+        class_major classMajor,
+        grade grade,
+        course_id courseId,
+        user_id userId
+        FROM
+        teachingClass
+        WHERE
+        course_id=#{courseId}
+        ORDER BY
+        course_id ASC,
+        class_id ASC
+    </select>
+
+    <!--List<TeachingClass> getClassesByUserId(@Param("userId") String userId);-->
+    <select id="getClassesByUserId" resultType="com.web.teachingschedule.vo.entity.TeachingClass">
+        SELECT
+        class_id classId,
+        class_people classPeople,
+        class_major classMajor,
+        grade grade,
+        course_id courseId,
+        user_id userId
+        FROM
+        teachingClass
+        WHERE
+        user_id=#{userId}
+        ORDER BY
+        course_id ASC,
+        class_id ASC
+    </select>
+
+    <!--TeachingClass getClassByClassId(@Param("classId") String classId);-->
+    <select id="getClassByClassId" resultType="com.web.teachingschedule.vo.entity.TeachingClass">
+        SELECT
+        class_id classId,
+        class_people classPeople,
+        class_major classMajor,
+        grade grade,
+        course_id courseId,
+        user_id userId
+        FROM
+        teachingClass
+        WHERE
+        class_id=#{classId}
+    </select>
+
+    <!--int addClass(TeachingClass teachingClass);-->
+    <insert id="addClass" parameterType="com.web.teachingschedule.vo.entity.TeachingClass">
+        INSERT INTO
+        teachingClass
+        (class_id,class_people,class_major,grade,course_id,user_id)
+        VALUE
+        (#{classId},#{classPeople},#{classMajor},#{grade},#{courseId},#{userId})
+    </insert>
+
+    <!--int modifyClass(TeachingClass teachingClass);-->
+    <update id="modifyClass" parameterType="com.web.teachingschedule.vo.entity.TeachingClass">
+        UPDATE
+        teachingClass
+        <set>
+            <if test="classPeople!=null and classPeople!=-1">
+                class_people=#{classPeople},
+            </if>
+            <if test="classMajor!=null">
+                class_major=#{classMajor},
+            </if>
+            <if test="grade!=null">
+                grade=#{grade},
+            </if>
+            <if test="courseId!=null">
+                course_id=#{courseId},
+            </if>
+            <if test="userId!=null">
+                user_id=#{userId},
+            </if>
+        </set>
+        WHERE
+        class_id=#{classId}
+    </update>
+
+    <!--int deleteClassByClassId(@Param("classId") String classId);-->
+    <delete id="deleteClassByClassId" parameterType="java.lang.String">
+        DELETE FROM
+        teachingClass
+        WHERE
+        class_id=#{classId}
+    </delete>
+
+    <!--int deleteClassByCourseId(@Param("courseId") String courseId);-->
+    <delete id="deleteClassByCourseId" parameterType="java.lang.String">
+        DELETE FROM
+        teachingClass
+        WHERE
+        course_id=#{courseId}
+    </delete>
+
+    <!--int deleteClassByUserId(@Param("userId") String userId);-->
+    <delete id="deleteClassByUserId" parameterType="java.lang.String">
+        DELETE FROM
+        teachingClass
+        WHERE
+        user_id=#{userId}
+    </delete>
+
+</mapper>

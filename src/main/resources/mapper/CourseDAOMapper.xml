@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.teachingschedule.dao.CourseDAO">
+    <!--Course getCourseById(@Param("courseId") String courseId);-->
+    <select id="getCourseById" resultType="com.web.teachingschedule.vo.entity.Course">
+        SELECT
+        course_id courseId,
+        course_name courseName,
+        totalhours totalHours,
+        expehours expeHours
+        FROM
+        course
+        WHERE
+        course_id=#{courseId}
+    </select>
+
+    <!--Course getCourseByName(@Param("courseName") String courseName);-->
+    <select id="getCourseByName" resultType="com.web.teachingschedule.vo.entity.Course">
+        SELECT
+        course_id courseId,
+        course_name courseName,
+        totalhours totalHours,
+        expehours expeHours
+        FROM
+        course
+        WHERE
+        course_name=#{courseName}
+    </select>
+    <!--int addCourse(Course course);-->
+    <insert id="addCourse" parameterType="com.web.teachingschedule.vo.entity.Course">
+        INSERT INTO
+        course
+        (course_id,course_name,totalhours,expehours)
+        VALUE
+        (#{courseId},#{courseName},#{totalHours},#{expeHours})
+
+    </insert>
+
+    <!--int deleteCourse(@Param("courseId") String courseId);-->
+    <delete id="deleteCourse">
+        DELETE FROM
+        course
+        WHERE
+        course_id=#{courseId}
+    </delete>
+
+    <!--int modifyCourse(Course course);-->
+    <update id="modifyCourse" parameterType="com.web.teachingschedule.vo.entity.Course">
+        UPDATE
+        course
+        <set>
+            <if test="courseName!=null">
+                course_name=#{courseName},
+            </if>
+            <if test="totalHours!=null and totalHours != -1">
+                totalhours=#{totalHours},
+            </if>
+            <if test="expeHours!=null and expeHours != -1">
+                expehours=#{expeHours},
+            </if>
+        </set>
+        WHERE
+        course_id=#{courseId}
+    </update>
+
+    <!--List<Course> getCourses();-->
+    <select id="getCourses" resultType="com.web.teachingschedule.vo.entity.Course">
+        SELECT
+        course_id courseId,
+        course_name courseName,
+        totalhours totalHours,
+        expehours expeHours
+        FROM
+        course
+        ORDER BY course_id ASC
+    </select>
+
+    <!--List<String> getCourseName(String userName);-->
+    <select id="getCourseName" resultType="java.lang.String">
+        SELECT
+        c.course_name
+
+        FROM
+        course c
+        JOIN teachingClass t ON (c.course_id=t.course_id)
+        JOIN UserInfo u ON (u.user_id=t.user_id)
+        WHERE
+        u.user_name=#{userName}
+    </select>
+
+
+
+</mapper>

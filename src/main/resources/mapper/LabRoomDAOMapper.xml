@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.teachingschedule.dao.LabRoomDAO">
+
+
+    <!--List<LabRoom> getRooms();-->
+    <select id="getRooms" resultType="com.web.teachingschedule.vo.entity.LabRoom">
+        SELECT
+        lab_name labName,
+        lab_describe labDescribe,
+        lab_number labNumber,
+        lab_people labPeople
+        FROM
+        labRoom
+        ORDER BY
+        lab_name ASC
+    </select>
+
+    <!--LabRoom getRoomByName(String labName);-->
+    <select id="getRoomByName" resultType="com.web.teachingschedule.vo.entity.LabRoom">
+        SELECT
+        lab_name labName,
+        lab_describe labDescribe,
+        lab_number labNumber,
+        lab_people labPeople
+        FROM
+        labRoom
+        WHERE
+        lab_name=#{labName}
+        ORDER BY
+        lab_name ASC
+    </select>
+
+    <!--int modifyLabRoom(LabRoom labRoom);-->
+    <update id="modifyLabRoom" parameterType="com.web.teachingschedule.vo.entity.LabRoom">
+        UPDATE
+        labRoom
+            <set>
+              <if test="labDescribe!=null">
+                  lab_describe=#{labDescribe},
+              </if>
+              <if test="labNumber!=null and labNumber != -1">
+                  lab_number=#{labNumber},
+              </if>
+              <if test="labPeople!=null and labPeople != -1">
+                  lab_people=#{labPeople},
+              </if>
+            </set>
+        WHERE
+        lab_name=#{labName}
+
+    </update>
+
+    <!--int addLabRoom(LabRoom labRoom);-->
+    <insert id="addLabRoom" parameterType="com.web.teachingschedule.vo.entity.LabRoom">
+        INSERT INTO
+        labRoom
+        (lab_name,lab_describe,lab_number,lab_people)
+        VALUE
+        (#{labName},#{labDescribe},#{labNumber},#{labPeople})
+    </insert>
+
+    <!--int deleteLabRoom(String labName);-->
+    <delete id="deleteLabRoom" parameterType="java.lang.String">
+        DELETE FROM
+        labRoom
+        WHERE
+        lab_name=#{labName}
+    </delete>
+
+
+</mapper>

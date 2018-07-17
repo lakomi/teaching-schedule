@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.teachingschedule.dao.ExperimentDAO">
+
+    <!--List<Experiment> getExpes();-->
+    <select id="getExpes" resultType="com.web.teachingschedule.vo.entity.Experiment">
+        SELECT
+        e_id eId,
+        e_name eName,
+        e_type eType,
+        e_hours eHours,
+        course_id courseId
+        FROM
+        experiment
+        ORDER BY
+        course_id ASC
+        e_id ASC
+    </select>
+
+    <!--List<Experiment> getExpesByCourseId(@Param("courseId") String courseId);-->
+    <select id="getExpesByCourseId" resultType="com.web.teachingschedule.vo.entity.Experiment">
+        SELECT
+        e_id eId,
+        e_name eName,
+        e_type eType,
+        e_hours eHours,
+        course_id courseId
+        FROM
+        experiment
+        WHERE
+        course_id=#{courseId}
+        ORDER BY
+        e_id ASC
+    </select>
+
+    <!--Experiment getExpeByeId(@Param("eId") String eId);-->
+    <select id="getExpeByeId" resultType="com.web.teachingschedule.vo.entity.Experiment">
+        SELECT
+        e_id eId,
+        e_name eName,
+        e_type eType,
+        e_hours eHours,
+        course_id courseId
+        FROM
+        experiment
+        WHERE
+        e_id=#{eId}
+    </select>
+
+    <!--int addExpe(Experiment experiment);-->
+    <insert id="addExpe" parameterType="com.web.teachingschedule.vo.entity.Experiment">
+        INSERT INTO
+        experiment
+        (e_id,e_name,e_type,e_hours,course_id)
+        VALUE
+        (#{eId},#{eName},#{eType},#{eHours},#{courseId})
+    </insert>
+
+    <!--int modifyExpe(Experiment experiment);-->
+    <update id="modifyExpe" parameterType="com.web.teachingschedule.vo.entity.Experiment">
+        UPDATE
+        experiment
+        <set>
+            <if test="eName!=null">
+                e_name=#{eName},
+            </if>
+            <if test="eType!=null">
+                e_type=#{eType},
+            </if>
+            <if test="eHours!=null and eHours != -1">
+                e_hours=#{eHours},
+            </if>
+            <if test="courseId!=null">
+                course_id=#{courseId},
+            </if>
+        </set>
+        WHERE
+        e_id=#{eId}
+    </update>
+
+    <!--int deleteExpe(@Param("eId") String eId);-->
+    <delete id="deleteExpe" parameterType="java.lang.String">
+        DELETE FROM
+        experiment
+        WHERE
+        e_id=#{eId}
+    </delete>
+</mapper>
